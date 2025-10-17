@@ -1,0 +1,18 @@
+...
+<form id="upForm" enctype="multipart/form-data">
+  <input class="input" name="title" placeholder="Video title" required>
+  <input class="input" name="video" type="file" accept="video/mp4" required>
+  <button class="button is-info">Upload</button>
+</form>
+<script>
+  document.getElementById('upForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    await fetch(`${API}/upload`, {
+      method: 'POST',
+      headers: {Authorization: 'Bearer '+localStorage.token},
+      body: form
+    });
+    location.href = '/playback.html';
+  });
+</script>
