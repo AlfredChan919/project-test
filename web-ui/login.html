@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Login</h1>
+    <form id="loginForm">
+      <input class="input" name="username" placeholder="user" required>
+      <input class="input" name="password" type="password" placeholder="pass" required>
+      <button class="button is-primary">Login</button>
+    </form>
+    <p id="msg"></p>
+  </div>
+</section>
+<script src="js/api.js"></script>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const body = Object.fromEntries(new FormData(e.target));
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if(res.ok) {
+      localStorage.token = data.token;
+      location.href = '/upload.html';
+    } else {
+      document.getElementById('msg').textContent = data.message;
+    }
+  });
+</script>
+</body>
+</html>
